@@ -1,0 +1,49 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "main": "node_modules/react-scripts/scripts/start.js",
+  "dependencies": {
+    "@material-ui/core": "^3.2.2",
+    "@material-ui/icons": "^3.0.1",
+    "ajv": "^6.5.4",
+    "axios": "0.18.0",
+    "firebase": "^5.5.8",
+    "formik": "^1.3.1",
+    "moment": "^2.22.2",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-dropzone": "7.0.1",
+    "react-moment": "^0.8.4",
+    "react-redux": "5.0.7",
+    "react-router-dom": "^4.3.1",
+    "react-router-scroll-top": "^0.1.1",
+    "react-scripts": "2.0.5",
+    "recharts": "^1.3.5",
+    "redux": "4.0.0",
+    "redux-persist": "5.10.0",
+    "redux-thunk": "2.3.0",
+    "tailwind": "^2.4.0",
+    "tailwindcss": "^0.6.6",
+    "file-selector": "0.1.5",
+    "material-ui-next-pickers": "0.0.15",
+    "classnames": "2.2.6"
+  },
+  "scripts": {
+    "tailwind:css": "tailwind build src/css/tailwind.src.css -c  tailwind-config.js -o src/css/tailwind.css",
+    "start": "npm run tailwind:css && react-scripts start",
+    "build": "npm run tailwind:css && react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "proxy": "http://localhost:3030"
+}
