@@ -7,8 +7,9 @@ export const taskAddController = async (req, res, next) => {
     let currentTask = body[i];
     const people = await db.sequelize
       .query(
-        "CALL add_task( :deadline, :assignee, :owner_id, :task_name, :task_instructions );",
+        "CALL add_task( :deadline, :assignee, :owner_id, :task_name, :task_instructions, @p_created_id); select @p_created_id as created_id;",
         {
+          type: db.sequelize.QueryTypes.SELECT,
           replacements: {
             deadline: currentTask.deadline,
             assignee: currentTask.employee_id,
@@ -18,7 +19,8 @@ export const taskAddController = async (req, res, next) => {
           }
         }
       )
-      .spread(results => {
+      .spread((results,metadata) => {
+        let created_id = metadata[0].created_id;
         console.log(currentTask.files.length);
         let timestamp = Math.round(new Date().getTime() / 1000);
         if (currentTask.files.length && currentTask.files.length > 0) {
@@ -27,7 +29,7 @@ export const taskAddController = async (req, res, next) => {
               "CALL assign_document(:task_id,:document_id,:unique_stamp);",
               {
                 replacements: {
-                  task_id: results,
+                  task_id: created_id,
                   document_id: currentTask.files[j],
                   unique_stamp: timestamp
                 }
@@ -44,7 +46,6 @@ export const taskAddController = async (req, res, next) => {
 
 export const taskGetController = async (req, res, next) => {
   const { authorization } = req.headers;
-    console.log(authorization)
   const tasks = await db.sequelize
     .query(`CALL get_tasks(:token)`, {
       type: db.sequelize.QueryTypes.RAW,

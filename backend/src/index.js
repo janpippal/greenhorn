@@ -6,7 +6,6 @@ import { setupLogging } from './logging';
 
 dotenv.config();
 const { PORT = 3030 } = process.env;
-console.log(process.env)
 
 setupLogging();
 

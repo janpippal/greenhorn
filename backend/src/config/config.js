@@ -1,10 +1,13 @@
 module.exports = {
   "development": {
-    "username": "xpipj04",
-    "password": "xdgo2m9w8stikv8j",
-    "database": "user_xpipj04",
-    "host": "vse.handson.pro",
-    "dialect": "mysql"
+    "username": "root",
+    "password": "",
+    "database": "4it445",
+    "host": "localhost",
+    "dialect": "mysql",
+    "dialectOptions":{
+      "multipleStatements": "true",
+    },
   },
   "production": {
     "username": "team08",
