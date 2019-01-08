@@ -32,6 +32,12 @@
   "scripts": {
     "tailwind:css": "tailwind build src/css/tailwind.src.css -c  tailwind-config.js -o src/css/tailwind.css",
     "start": "npm run tailwind:css && react-scripts start",
+    "wlocal": "npm run tailwind:css && SET REACT_APP_ENVIRONMENT=local && react-scripts start",
+    "wdev": "npm run tailwind:css && SET REACT_APP_ENVIRONMENT=dev && react-scripts start",
+    "wdevjan": "npm run tailwind:css && SET REACT_APP_ENVIRONMENT=devjan && react-scripts start",
+    "local": "npm run tailwind:css && REACT_APP_ENVIRONMENT=local && react-scripts start",
+    "dev": "npm run tailwind:css && REACT_APP_ENVIRONMENT=dev && react-scripts start",
+    "devjan": "npm run tailwind:css && REACT_APP_ENVIRONMENT=devjan && react-scripts start",
     "build": "npm run tailwind:css && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

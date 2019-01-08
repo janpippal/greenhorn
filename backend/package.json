@@ -4,7 +4,12 @@
   "description": "",
   "main": "build/main.js",
   "scripts": {
-    "dev": "backpack dev",
+    "dev": "ENVIRONMENT=dev && backpack dev",
+    "local": "ENVIRONMENT=local && backpack dev",
+    "devjan": "ENVIRONMENT=devjan && backpack dev",
+    "wdev": "SET ENVIRONMENT=dev && backpack dev",
+    "wlocal": "SET ENVIRONMENT=local && backpack dev",
+    "wdevjan": "SET ENVIRONMENT=devjan && backpack dev",
     "dev:debug": "backpack dev --inspect --debug-brk",
     "start": "node ./build/main.js",
     "prestart": "run-s build",
