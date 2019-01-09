@@ -379,6 +379,7 @@ module.exports = {
     'auto': 'auto',
     'cover': 'cover',
     'contain': 'contain',
+    'half': '50% 100%',
   },
 
 

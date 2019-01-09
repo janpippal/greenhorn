@@ -8,7 +8,6 @@ export const fetchTemplates = () => async (dispatch, getState, { api }) => {
       return;
     })
     .catch(error => {
-      console.log(error);
       dispatch({
         type: actions.SET_ERROR,
         payload: "Failed when loading templates"
@@ -23,7 +22,6 @@ export const addTemplate = (templateJson, history) => async (dispatch, getState,
     history.push("/templates");
   })
   .catch(error => {
-    console.log(error);
     dispatch({
       type: actions.SET_ERROR,
       payload: "Failed when adding template"
@@ -40,7 +38,6 @@ export const fetchAssignedTemplates = () => async (dispatch, getState, { api }) 
       return;
     })
     .catch(error => {
-      console.log(error);
       dispatch({
         type: actions.SET_ERROR,
         payload: "Failed when loading assigned templates"
@@ -60,7 +57,6 @@ await api
     return;
   })
   .catch(error => {
-    console.log(error);
     dispatch({
       type: actions.SET_ERROR,
       payload: "Failed when assigning template"
@@ -78,7 +74,6 @@ await api
     return;
   })
   .catch(error => {
-    console.log(error);
     dispatch({
       type: actions.SET_ERROR,
       payload: "Failed when unassigning template"

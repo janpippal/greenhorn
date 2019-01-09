@@ -101,7 +101,6 @@ class TaskEditForm extends Component {
 
   submitTasks = async state => {
     let uploadedDocumentsIDs = [];
-    console.log(state.files)
     if (state.files.length !== 0) {
       uploadedDocumentsIDs = await this.props.uploadFile(state.files,"tasks","owner");
     }
@@ -114,7 +113,6 @@ class TaskEditForm extends Component {
       deadline: state.deadline,
       owner_id: this.props.user.id
     };
-    console.log(taskJson)
 
     await this.props.updateTask(taskJson,this.props.history);
   };

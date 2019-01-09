@@ -8,7 +8,6 @@ export const fetchPeople = () => async (dispatch, getState, { api }) => {
       return;
     })
     .catch(error => {
-      console.log(error);
       dispatch({
         type: actions.SET_ERROR,
         payload: "Failed when loading people"
@@ -24,7 +23,6 @@ export const deletePerson = id => async (dispatch, getState, { api }) => {
       dispatch({ type: actions.DELETE_PERSON, payload: id });
     })
     .catch(error => {
-      console.log(error);
       dispatch({
         type: actions.SET_ERROR,
         payload: "Failed when deleting person"
@@ -48,7 +46,6 @@ export const addPerson = (state,history) => async (dispatch, getState, { api }) 
       history.push("/people");
     })
     .catch(response => {
-      console.log(response.response.data.message)
       dispatch({ type: actions.SET_ERROR, payload: response.response.data.message });
     });
 };
@@ -60,7 +57,6 @@ export const getPersonById = (id) => async (dispatch, getState, { api }) => {
     return response.data.person;
   })
   .catch(error => {
-    console.log(error);
     dispatch({
       type: actions.SET_ERROR,
       payload: "Failed when getting person"
@@ -78,7 +74,6 @@ export const updatePerson = (personJson, history) => async (dispatch, getState, 
       return;
     })
     .catch(error => {
-      console.log(error);
       dispatch({
         type: actions.SET_ERROR,
         payload: "Failed when updating person"

@@ -1620,6 +1620,10 @@ table {
   background-size: contain !important;
 }
 
+.bg-half {
+  background-size: 50% 100% !important;
+}
+
 .border-collapse {
   border-collapse: collapse !important;
 }
@@ -7596,6 +7600,10 @@ table {
     background-size: contain !important;
   }
 
+  .sm\:bg-half {
+    background-size: 50% 100% !important;
+  }
+
   .sm\:border-transparent {
     border-color: transparent !important;
   }
@@ -13547,6 +13555,10 @@ table {
 
   .md\:bg-contain {
     background-size: contain !important;
+  }
+
+  .md\:bg-half {
+    background-size: 50% 100% !important;
   }
 
   .md\:border-transparent {
@@ -19502,6 +19514,10 @@ table {
     background-size: contain !important;
   }
 
+  .lg\:bg-half {
+    background-size: 50% 100% !important;
+  }
+
   .lg\:border-transparent {
     border-color: transparent !important;
   }
@@ -25453,6 +25469,10 @@ table {
 
   .xl\:bg-contain {
     background-size: contain !important;
+  }
+
+  .xl\:bg-half {
+    background-size: 50% 100% !important;
   }
 
   .xl\:border-transparent {

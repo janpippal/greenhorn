@@ -72,7 +72,7 @@ class AssignTemplateModal extends Component {
                 <ListItemText primary={template.template_name}/>
                 <ListItemSecondaryAction onClick={() => {this.handleAddIntoSelectedTemplates(template.id)}}>
                   <Checkbox
-                    checked={this.state.selectedTemplatesId.indexOf(template.id) !== -1}
+                    color='primary' checked={this.state.selectedTemplatesId.indexOf(template.id) !== -1}
                   />
                 </ListItemSecondaryAction>
               </ListItem>

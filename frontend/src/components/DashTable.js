@@ -10,6 +10,7 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import TablePagination from "@material-ui/core/TablePagination";
 import Paper from "@material-ui/core/Paper";
 import { TaskDetail } from "./TaskDetail";
+import IconPriority from "@material-ui/icons/PriorityHigh";
 import { updateTaskState } from "../services/tasks";
 import { connect } from "react-redux";
 const styles = theme => ({
@@ -22,8 +23,7 @@ const styles = theme => ({
   },
   head: {
     backgroundColor: theme.palette.primary.main,
-    color: theme.palette.common.white,
-    fontSize: 20
+    color: theme.palette.common.white
   },
   root: {
     color: "white",
@@ -42,7 +42,8 @@ class DashTable extends Component {
     orderBy: "deadline",
     page: 0,
     rowsPerPage: 10,
-    selectedRowIds: []
+    selectedRowIds: [],
+    minusRow: 0
   };
 
   createSortHandler = property => event => {
@@ -88,36 +89,7 @@ class DashTable extends Component {
     return stabilizedThis.map(el => el[0]);
   };
 
-  handleChangeState = (taskId, taskState, userId) => () => {
-    this.props.updateTaskState(taskId, taskState, userId);
-    this.props.loadTasks();
-  };
 
-  handleClose = () => {
-    this.setState({ selectedRowIds: [] });
-  };
-
-  handleClick = (event, task) => {
-    const { selectedRowIds } = this.state;
-    let id = task.id;
-    const selectedRowIdIndex = selectedRowIds.indexOf(id);
-    let newSelectedRowIds = [];
-
-    if (selectedRowIdIndex === -1) {
-      newSelectedRowIds = newSelectedRowIds.concat(selectedRowIds, id);
-    } else if (selectedRowIdIndex === 0) {
-      newSelectedRowIds = newSelectedRowIds.concat(selectedRowIds.slice(1));
-    } else if (selectedRowIdIndex === selectedRowIds.length - 1) {
-      newSelectedRowIds = newSelectedRowIds.concat(selectedRowIds.slice(0, -1));
-    } else if (selectedRowIdIndex > 0) {
-      newSelectedRowIds = newSelectedRowIds.concat(
-        selectedRowIds.slice(0, selectedRowIdIndex),
-        selectedRowIds.slice(selectedRowIdIndex + 1)
-      );
-    }
-
-    this.setState({ selectedRowIds: newSelectedRowIds });
-  };
 
   giveMeColorBadge = status => {
     let label = "";
@@ -144,27 +116,33 @@ class DashTable extends Component {
     return label;
   };
 
-  isSelected = id => this.state.selectedRowIds.indexOf(id) !== -1;
 
-  getTableRow = (type, task, isSelected) => {
+
+  getTableRow = (type, task, isSelected, i) => {
     if (type === "overall_employee") {
       return (
-        <Fragment>
+        <Fragment key={i}>
           <TableRow
-            key={task.id}
-            className={
-              task.days_to_deadline < 0
-                ? "bg-red-light"
-                : task.days_to_deadline === 0
-                ? "bg-yellow-light"
-                : ""
-            }
             onClick={e => {
-              this.handleClick(e, task);
+              this.props.handleClick(task.id);
             }}
           >
             <TableCell>{task.deadline}</TableCell>
-            <TableCell>{task.days_to_deadline}</TableCell>
+            <TableCell>
+              {" "}
+              {task.days_to_deadline <= 0 && (
+                <IconPriority
+                  className={
+                    task.days_to_deadline < 0
+                      ? "text-red-light"
+                      : task.days_to_deadline === 0
+                      ? "text-yellow-light"
+                      : ""
+                  }
+                />
+              )}
+              {task.days_to_deadline}
+            </TableCell>
             <TableCell>{task.owner}</TableCell>
             <TableCell>{task.task_name}</TableCell>
             <TableCell>{task.state}</TableCell>
@@ -173,7 +151,7 @@ class DashTable extends Component {
             task={task}
             open={isSelected}
             handleClose={this.handleClose}
-            handleChangeState={this.handleChangeState}
+            handleChangeState={this.props.handleChangeState}
             giveMeColorBadge={this.giveMeColorBadge}
             user={this.props.user}
           />
@@ -181,18 +159,10 @@ class DashTable extends Component {
       );
     } else if (type === "returned_employee") {
       return (
-        <Fragment>
+        <Fragment key={i}>
           <TableRow
-            key={task.id}
-            className={
-              task.days_to_deadline < 0
-                ? "bg-red-light"
-                : task.days_to_deadline === 0
-                ? "bg-yellow-light"
-                : ""
-            }
             onClick={e => {
-              this.handleClick(e, task);
+              this.props.handleClick(task.id);
             }}
           >
             <TableCell>{task.owner}</TableCell>
@@ -203,7 +173,7 @@ class DashTable extends Component {
             task={task}
             open={isSelected}
             handleClose={this.handleClose}
-            handleChangeState={this.handleChangeState}
+            handleChangeState={this.props.handleChangeState}
             giveMeColorBadge={this.giveMeColorBadge}
             user={this.props.user}
           />
@@ -256,12 +226,17 @@ class DashTable extends Component {
               )}
               {this.stableSort(data, this.getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(task => {
-                  const isSelected = this.isSelected(task.id);
-                  return this.getTableRow(type, task, isSelected);
+                .map((task,i) => {
+                  const isSelected = this.props.isSelected(task.id);
+                  return this.getTableRow(type, task, isSelected, i);
                 })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
+              {emptyRows > 0 && data.length === 0 && (
+                <TableRow style={{ height: (emptyRows - 1) * 48 }}>
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
+              {emptyRows > 0 && data.length > 0 && (
+                <TableRow style={{ height: emptyRows * 48 }}>
                   <TableCell colSpan={6} />
                 </TableRow>
               )}

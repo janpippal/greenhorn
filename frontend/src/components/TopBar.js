@@ -45,9 +45,14 @@ const styles = theme => ({
     width: drawerWidth,
   },
   content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 3
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
   },
+  mainContent: {
+    flex: 1,
+    padding: '40px 5px 0',
+},
   grow: {
     flexGrow: 1
   }
@@ -109,7 +114,7 @@ class TopBar extends React.Component {
 
       <main className={classes.content}>
         <div className={classes.toolbar}/>
-        <article>{children}</article>
+        <div className={classes.mainContent}>{children}</div>
       </main>
 
     </div>);

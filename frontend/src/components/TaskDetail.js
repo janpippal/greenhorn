@@ -45,13 +45,8 @@ const styles = theme => ({
 
 class TaskDetail extends React.Component {
   state = {
-    openedId: this.props.openedId,
     scroll: "paper",
     files: []
-  };
-
-  handleClose = () => {
-    this.setState({ openedId: 0 });
   };
 
   giveMeDueDaysResultLabel = days => {
@@ -83,29 +78,37 @@ class TaskDetail extends React.Component {
     });
   };
 
-  submitNewFiles = async (task_id) => {
+  submitNewFiles = async task_id => {
     let uploadedDocumentsIDs = [];
     if (this.state.files.length !== 0) {
-      uploadedDocumentsIDs = await this.props.uploadFile(this.state.files,"tasks","assignee");
+      uploadedDocumentsIDs = await this.props.uploadFile(
+        this.state.files,
+        "tasks",
+        "assignee"
+      );
 
-    var taskJson = {
-      task_id: task_id,
-      files: uploadedDocumentsIDs
-    };
-    await this.props.updateTaskWithFiles(taskJson,this.props.history);
-    this.handleClose()
+      var taskJson = {
+        task_id: task_id,
+        files: uploadedDocumentsIDs
+      };
+      await this.props.updateTaskWithFiles(taskJson, this.props.history);
+      this.props.handleClose();
     }
-  }
+  };
 
   render() {
     const task = this.props.task;
-    const { classes, handleClose, handleChangeState, user } = this.props;
-    const url = process.env.REACT_APP_ENVIRONMENT === 'local ' ? 'http://localhost:3030' : process.env.REACT_APP_ENVIRONMENT === 'dev ' ? 'http://dev.backend.team08.vse.handson.pro' : 'http://dev.backend.xpipj04.vse.handson.pro'
+    const { classes, handleChangeState, user } = this.props;
+    const url =
+      process.env.REACT_APP_ENVIRONMENT === "local "
+        ? "http://localhost:3030"
+        : process.env.REACT_APP_ENVIRONMENT === "dev "
+        ? "http://dev.backend.team08.vse.handson.pro"
+        : "http://dev.backend.xpipj04.vse.handson.pro";
     return (
       <Dialog
-        onEscapeKeyDown={handleClose}
+        onEscapeKeyDown={() => {this.props.handleClose()}}
         open={this.props.open}
-        onClose={this.handleClose}
         scroll="paper"
       >
         <DialogTitle
@@ -114,11 +117,11 @@ class TaskDetail extends React.Component {
         >
           {task.task_name}
           <IconClose
-            onClick={handleClose}
+            onClick={()=> {this.props.handleClose()}}
             className="float-right hover:shadow-inner hover:bg-white hover:text-green-dark"
           />
         </DialogTitle>
-        <DialogContent style={ { minWidth:500} }>
+        <DialogContent style={{ minWidth: 500 }}>
           <Typography variant="h6" className={classes.typo}>
             Deadline:
           </Typography>
@@ -155,7 +158,11 @@ class TaskDetail extends React.Component {
               {task.history.map(historyItem => (
                 <ExpansionPanelDetails key={historyItem.id}>
                   <Typography>
-                    {historyItem.action}{" by "}{historyItem.by}{" on "}{historyItem.at}
+                    {historyItem.action}
+                    {" by "}
+                    {historyItem.by}
+                    {" on "}
+                    {historyItem.at}
                   </Typography>
                 </ExpansionPanelDetails>
               ))}
@@ -165,15 +172,14 @@ class TaskDetail extends React.Component {
             0 && <Typography variant="h6">Attachments from owner</Typography>}
           <Grid item={true} xs={12}>
             {task.files &&
-              task.files.filter(file => file.uploaded_by === "owner").length > 0 &&
+              task.files.filter(file => file.uploaded_by === "owner").length >
+                0 &&
               task.files
                 .filter(file => file.uploaded_by === "owner")
                 .map((file, i) => (
                   <a
                     key={file.id}
-                    href={
-                      url + file.url
-                    }
+                    href={url + file.url}
                     className="no-underline"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -195,15 +201,14 @@ class TaskDetail extends React.Component {
           )}
           <Grid item={true} xs={12}>
             {task.files &&
-              task.files.filter(file => file.uploaded_by === "assignee").length > 0 &&
+              task.files.filter(file => file.uploaded_by === "assignee")
+                .length > 0 &&
               task.files
                 .filter(file => file.uploaded_by === "assignee")
                 .map((file, i) => (
                   <a
                     key={file.id}
-                    href={
-                      url + file.url
-                    }
+                    href={url + file.url}
                     className="no-underline"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -219,43 +224,54 @@ class TaskDetail extends React.Component {
                   </a>
                 ))}
           </Grid>
-          { user.role === "employee" && (task.state === 'returned' || task.state === 'new') && (
-            <Grid item={true} xs={12}>
-            <Typography variant="h6">Wanna attach some files?</Typography>
-            <div className="pt-2 pb-2" justify="center">
-              <Dropzone
-                className="flex items-center border-grey hover:border-black border rounded h-full"
-                getDataTransferItems={evt => fromEvent(evt)}
-                onDrop={(accepted, rejected) => {
-                  this.handleAddFile(accepted);
-                }}
-              >
-                <AddIcon className="text-grey" />
-                <div className="text-grey">Click or drop files here</div>
-              </Dropzone>
-            </div>
-            {this.state.files.map((f, i) => (
-              <Chip
-                icon={<IconDescription />}
-                key={i}
-                label={f.path || f.name}
-                color="primary"
-                onDelete={() => {
-                  this.handleDeleteFile(f.name);
-                }}
-                className={classes.chip}
-                variant="outlined"
-              />
-            ))}
-            <Fab color="primary" variant="extended" onClick={ () => { this.submitNewFiles(task.id) } }>Upload files</Fab>
-            </Grid>
-          ) }
+          {user.role === "employee" &&
+            (task.state === "returned" || task.state === "new") && (
+              <Grid item={true} xs={12}>
+                <Typography variant="h6">Wanna attach some files?</Typography>
+                <div className="pt-2 pb-2" justify="center">
+                  <Dropzone
+                    className="flex items-center border-grey hover:border-black border rounded h-full"
+                    getDataTransferItems={evt => fromEvent(evt)}
+                    onDrop={(accepted, rejected) => {
+                      this.handleAddFile(accepted);
+                    }}
+                  >
+                    <AddIcon className="text-grey" />
+                    <div className="text-grey">Click or drop files here</div>
+                  </Dropzone>
+                </div>
+                {this.state.files.map((f, i) => (
+                  <Chip
+                    icon={<IconDescription />}
+                    key={i}
+                    label={f.path || f.name}
+                    color="primary"
+                    onDelete={() => {
+                      this.handleDeleteFile(f.name);
+                    }}
+                    className={classes.chip}
+                    variant="outlined"
+                  />
+                ))}
+                <Fab
+                  color="primary"
+                  variant="extended"
+                  onClick={() => {
+                    this.submitNewFiles(task.id);
+                  }}
+                >
+                  Upload files
+                </Fab>
+              </Grid>
+            )}
         </DialogContent>
         <DialogActions>
           {user.role === "employee" &&
             (task.state === "new" || task.state === "returned") && (
               <Fab
-                onClick={handleChangeState(task.id, "submitted", user.id)}
+                onClick={() => {
+                  handleChangeState(task.id, "submitted", user.id);
+                }}
                 color="primary"
                 variant="extended"
               >
@@ -265,7 +281,9 @@ class TaskDetail extends React.Component {
             )}
           {user.role === "admin" && task.state === "submitted" && (
             <Fab
-              onClick={handleChangeState(task.id, "returned", user.id)}
+              onClick={() => {
+                handleChangeState(task.id, "returned", user.id);
+              }}
               color="primary"
               variant="extended"
             >
@@ -275,7 +293,9 @@ class TaskDetail extends React.Component {
           )}
           {user.role === "admin" && task.state === "submitted" && (
             <Fab
-              onClick={handleChangeState(task.id, "done", user.id)}
+              onClick={() => {
+                handleChangeState(task.id, "done", user.id);
+              }}
               color="primary"
               variant="extended"
             >
@@ -285,7 +305,9 @@ class TaskDetail extends React.Component {
           )}
           {user.role === "admin" && task.state !== "cancelled" && (
             <Fab
-              onClick={handleChangeState(task.id, "cancelled", user.id)}
+              onClick={() => {
+                handleChangeState(task.id, "cancelled", user.id);
+              }}
               color="primary"
               variant="extended"
             >
@@ -298,7 +320,6 @@ class TaskDetail extends React.Component {
     );
   }
 }
-
 
 const mapDispatchToProps = {
   updateTaskWithFiles,

@@ -8,7 +8,6 @@ export const fetchTasks = () => async (dispatch, getState, { api }) => {
       return;
     })
     .catch(error => {
-      console.log(error);
       dispatch({
         type: actions.SET_ERROR,
         payload: "Failed when loading tasks"
@@ -25,7 +24,6 @@ export const updateTaskState = (taskId, updatedState, userId) => (dispatch, getS
       return;
     })
     .catch(error => {
-      console.log(error);
       dispatch({
         type: actions.SET_ERROR,
         payload: "Failed when changing task state"
@@ -42,7 +40,6 @@ export const addTask = (taskJson,history) => (dispatch, getState, { api }) => {
       return;
     })
     .catch(error => {
-      console.log(error);
       dispatch({
         type: actions.SET_ERROR,
         payload: "Failed when adding task"
@@ -58,7 +55,6 @@ export const getTaskById = (id) => async (dispatch, getState, { api }) => {
       return response.data.task;
     })
     .catch(error => {
-      console.log(error);
       dispatch({
         type: actions.SET_ERROR,
         payload: "Failed when getting task"
@@ -77,7 +73,6 @@ export const updateTask = (taskJson, history) => async (dispatch, getState, { ap
       return;
     })
     .catch(error => {
-      console.log(error);
       dispatch({
         type: actions.SET_ERROR,
         payload: "Failed when updating task"
@@ -93,7 +88,6 @@ export const updateTaskWithFiles = (taskJson) => async (dispatch, getState, { ap
       return;
     })
     .catch(error => {
-      console.log(error);
       dispatch({
         type: actions.SET_ERROR,
         payload: "Failed when updating task"
