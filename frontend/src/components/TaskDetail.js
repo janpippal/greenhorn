@@ -100,6 +100,7 @@ class TaskDetail extends React.Component {
   render() {
     const task = this.props.task;
     const { classes, handleClose, handleChangeState, user } = this.props;
+    const url = process.env.REACT_APP_ENVIRONMENT === 'local ' ? 'http://localhost:3030' : process.env.REACT_APP_ENVIRONMENT === 'dev ' ? 'http://dev.backend.team08.vse.handson.pro' : 'http://dev.backend.xpipj04.vse.handson.pro'
     return (
       <Dialog
         onEscapeKeyDown={handleClose}
@@ -171,7 +172,7 @@ class TaskDetail extends React.Component {
                   <a
                     key={file.id}
                     href={
-                      "http://dev.backend.team08.vse.handson.pro" + file.url
+                      url + file.url
                     }
                     className="no-underline"
                     target="_blank"
@@ -201,7 +202,7 @@ class TaskDetail extends React.Component {
                   <a
                     key={file.id}
                     href={
-                      "http://dev.backend.team08.vse.handson.pro" + file.url
+                      url + file.url
                     }
                     className="no-underline"
                     target="_blank"
