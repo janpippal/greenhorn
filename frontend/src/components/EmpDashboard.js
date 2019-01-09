@@ -222,6 +222,7 @@ class EmpDashboard extends Component {
               data={this.state.filteredTasks}
               type="overall_employee"
               user={this.props.user}
+              loadTasks={ this.loadTasks }
             />
           </Grid>
           <Grid item xs={12} md={4}>
