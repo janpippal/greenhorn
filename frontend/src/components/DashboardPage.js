@@ -7,7 +7,6 @@ import { EmpDashboard } from './EmpDashboard'
 class DashboardPage extends Component {
   render() {
     const {user} = this.props;
-    console.log(process.env)
     return (
           <div className="dp-1">
             {user.role === 'admin' ?
