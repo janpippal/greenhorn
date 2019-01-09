@@ -61,8 +61,8 @@ class EmpDashboard extends Component {
   loadTasks = () => {
     this.props.fetchTasks().then(() => {
       this.setState({
-        tasks: this.props.tasks,
-        filteredTasks: this.props.tasks
+        tasks: this.props.tasks.filter(task => task.state !== "done" || task.state !== "cancelled"),
+        filteredTasks: this.props.tasks.filter(task => task.state !== "done" || task.state !== "cancelled")
       });
     });
   };
@@ -219,7 +219,7 @@ class EmpDashboard extends Component {
           <Grid item xs={12} md={8}>
             <DashTable
               headers={this.headersOverall}
-              data={this.state.filteredTasks}
+              data={this.state.filteredTasks.filter(task => task.state !== "done" || task.state !== "cancelled")}
               type="overall_employee"
               user={this.props.user}
               loadTasks={ this.loadTasks }
