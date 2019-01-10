@@ -1,7 +1,6 @@
 import db from "../../models/";
 import sgMail from "@sendgrid/mail";
 import cryptoRandomString from "crypto-random-string";
-import config from '../../config/vars';
 
 export const getPeopleController = async (req, res, next) => {
   const people = await db.sequelize
@@ -79,7 +78,7 @@ const sendEmail = async (email, name, linkString) => {
     `</strong>,
     <br/>
     <br/>
-    I am sending you this link <a href="`+ config.url + `/setpassword/` +
+    I am sending you this link <a href="http://dev.frontend.xpipj04.vse.handson.pro/setpassword/` +
     linkString +
     `">Set password<a>
     <br/>

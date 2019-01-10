@@ -1,4 +1,4 @@
-const env = process.env.ENVIRONMENT || 'production';
+const env = process.env.NODE_ENV || 'development';
 
 const fs = require('fs');
 const path = require('path');
@@ -10,7 +10,6 @@ const basename = path.basename(__filename);
 
 let db = {};
 let sequelize = {};
-
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable]);
 } else {
