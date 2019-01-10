@@ -24,28 +24,36 @@ import moment from "moment";
 const styles = theme => ({
   root: {
     flexWrap: "wrap",
+    display: 'flex',
     justifyContent: "space-around",
     overflow: "hidden",
     padding: 10
   },
   gridList: {
     flexWrap: "nowrap",
-    transform: "translateZ(0)"
+    transform: "translateZ(0)",
+    minWidth: "100%"
   },
   avatar: {
   marginRight: 0,
   width: 30,
   height: 30,
   backgroundColor: "white"
-},
+  },
   title: {
     fontSize: 14
   },
   gridTile: {
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   margin: {
     marginRight: theme.spacing.unit * 5
+  },
+  card: {
+    borderColor: theme.palette.primary.main,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderRadius: '0.25em'
   }
 });
 
@@ -72,21 +80,23 @@ class EmpDashboard extends Component {
   }
 
   isSelected = id => {
-    console.log('are you ready?')
     return this.state.selectedId === id
   };
 
   loadTasks = () => {
-    this.props.fetchTasks().then(() => {
-      this.setState({
-        tasks: this.props.tasks.filter(
-          task => task.state !== "done" && task.state !== "cancelled"
-        ),
-        filteredTasks: this.props.tasks.filter(
-          task => task.state !== "done" && task.state !== "cancelled"
-        )
-      });
-    });
+    this.setState({selectedId: 0   }, () => {
+      this.props.fetchTasks().then(() => {
+        this.setState({
+          tasks: this.props.tasks.filter(
+            task => task.state !== "done" && task.state !== "cancelled"
+          ),
+          filteredTasks: this.props.tasks.filter(
+            task => task.state !== "done" && task.state !== "cancelled"
+
+          ),
+        });
+      })
+    })
   };
 
   filterTasks = days => {
@@ -133,14 +143,10 @@ class EmpDashboard extends Component {
 
 
     handleClose = () => {
-      console.log('closing')
-      this.setState({ selectedId: 0 },()=>{
-        (console.log(this.state.selectedId))
-      });
+      this.setState({ selectedId: 0 })
     };
 
     handleClick = (task_id) => {
-      console.log(task_id)
       this.setState({ selectedId: task_id });
     };
 
@@ -173,11 +179,6 @@ class EmpDashboard extends Component {
         break;
     }
     return label;
-  };
-
-  handleChangeState = (taskId, taskState, userId) => () => {
-    this.props.updateTaskState(taskId, taskState, userId);
-    this.props.loadTasks();
   };
 
   render() {
@@ -217,7 +218,7 @@ class EmpDashboard extends Component {
           )}
           {this.state.filteredTasks.map(task => (
             <GridListTile key={task.id} className={classes.gridTile} >
-              <Card onClick={() => {this.handleClick(task.id)}}>
+              <Card onClick={() => {this.handleClick(task.id)}} className={ classes.card }>
               <CardHeader classes={{ avatar: classes.avatar, title: classes.title }} title={ <Typography variant="body1">{task.task_name}</Typography>} avatar={ <IconPriority className={
                                   task.days_to_deadline < 0
                                     ? "text-red-light"
@@ -238,16 +239,15 @@ class EmpDashboard extends Component {
                 task={task}
                 open={this.isSelected(task.id)}
                 handleClose={this.handleClose}
-                handleChangeState={this.handleChangeState}
+                loadTasks={this.loadTasks}
                 giveMeColorBadge={this.giveMeColorBadge}
                 user={this.props.user}
               />
             </GridListTile>
           ))}
         </GridList>
-
-        <Grid container spacing={24} className={classes.cardGrid}>
-          <Grid item xs={12} md={8} />
+        <div style={{ paddingTop: 20, width: "100%" }}>
+        <Grid container spacing={40} className={classes.cardGrid}>
           <Grid item xs={12} md={8}>
             <Badge
               color="primary"
@@ -323,8 +323,8 @@ class EmpDashboard extends Component {
               user={this.props.user}
               loadTasks={this.loadTasks}
               isSelected={ this.isSelected }
-              handleChangeState={ this.handleChangeState}
               handleClick={ this.handleClick}
+              handleClose={ this.handleClose }
             />
           </Grid>
           <Grid item xs={12} md={4}>
@@ -337,11 +337,12 @@ class EmpDashboard extends Component {
               user={this.props.user}
               loadTasks={this.loadTasks}
               isSelected={ this.isSelected }
-              handleChangeState={ this.handleChangeState}
               handleClick={ this.handleClick}
+              handleClose={ this.handleClose }
             />
           </Grid>
         </Grid>
+        </div>
       </div>
     );
   }

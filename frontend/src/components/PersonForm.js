@@ -127,6 +127,7 @@ class PersonForm extends React.Component {
   };
 
   handleChange = e => {
+    console.log(e.target.name)
     if (e.target.name === "assignTasks") {
       this.setState({ [e.target.name]: e.target.checked });
     } else {

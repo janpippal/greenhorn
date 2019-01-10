@@ -36,13 +36,19 @@ const styles = theme => ({
   }
 });
 
+
+const CustomTableCell = withStyles(theme => ({
+  root: {
+    padding: "4px 15px 4px 15px"
+  }
+}))(TableCell);
+
 class DashTable extends Component {
   state = {
     order: "asc",
     orderBy: "deadline",
     page: 0,
     rowsPerPage: 10,
-    selectedRowIds: [],
     minusRow: 0
   };
 
@@ -127,8 +133,8 @@ class DashTable extends Component {
               this.props.handleClick(task.id);
             }}
           >
-            <TableCell>{task.deadline}</TableCell>
-            <TableCell>
+            <CustomTableCell>{task.deadline}</CustomTableCell>
+            <CustomTableCell>
               {" "}
               {task.days_to_deadline <= 0 && (
                 <IconPriority
@@ -142,16 +148,16 @@ class DashTable extends Component {
                 />
               )}
               {task.days_to_deadline}
-            </TableCell>
-            <TableCell>{task.owner}</TableCell>
-            <TableCell>{task.task_name}</TableCell>
-            <TableCell>{task.state}</TableCell>
+            </CustomTableCell>
+            <CustomTableCell>{task.owner}</CustomTableCell>
+            <CustomTableCell>{task.task_name}</CustomTableCell>
+            <CustomTableCell>{task.state}</CustomTableCell>
           </TableRow>
           <TaskDetail
             task={task}
             open={isSelected}
-            handleClose={this.handleClose}
-            handleChangeState={this.props.handleChangeState}
+            handleClose={this.props.handleClose}
+            loadTasks={ this.props.loadTasks }
             giveMeColorBadge={this.giveMeColorBadge}
             user={this.props.user}
           />
@@ -165,15 +171,75 @@ class DashTable extends Component {
               this.props.handleClick(task.id);
             }}
           >
-            <TableCell>{task.owner}</TableCell>
-            <TableCell>{task.task_name}</TableCell>
-            <TableCell>{task.state}</TableCell>
+            <CustomTableCell>{task.owner}</CustomTableCell>
+            <CustomTableCell>{task.task_name}</CustomTableCell>
+            <CustomTableCell>{task.state}</CustomTableCell>
           </TableRow>
           <TaskDetail
             task={task}
             open={isSelected}
-            handleClose={this.handleClose}
-            handleChangeState={this.props.handleChangeState}
+            handleClose={this.props.handleClose}
+            giveMeColorBadge={this.giveMeColorBadge}
+            loadTasks={ this.props.loadTasks }
+            user={this.props.user}
+          />
+        </Fragment>
+      );
+    } else if (type === "overall_admin") {
+      return (
+        <Fragment key={i}>
+          <TableRow
+            onClick={e => {
+              this.props.handleClick(task.id);
+            }}
+          >
+            <CustomTableCell>{task.deadline}</CustomTableCell>
+            <CustomTableCell>
+              {" "}
+              {task.days_to_deadline <= 0 && (
+                <IconPriority
+                  className={
+                    task.days_to_deadline < 0
+                      ? "text-red-light"
+                      : task.days_to_deadline === 0
+                      ? "text-yellow-light"
+                      : ""
+                  }
+                />
+              )}
+              {task.days_to_deadline}
+            </CustomTableCell>
+            <CustomTableCell>{task.assignee}</CustomTableCell>
+            <CustomTableCell>{task.task_name}</CustomTableCell>
+            <CustomTableCell>{task.state}</CustomTableCell>
+          </TableRow>
+          <TaskDetail
+            task={task}
+            open={isSelected}
+            handleClose={this.props.handleClose}
+            loadTasks={ this.props.loadTasks }
+            giveMeColorBadge={this.giveMeColorBadge}
+            user={this.props.user}
+          />
+        </Fragment>
+      );
+    } else if (type === "submitted_employee") {
+      return (
+        <Fragment key={i}>
+          <TableRow
+            onClick={e => {
+              this.props.handleClick(task.id);
+            }}
+          >
+            <CustomTableCell className={ this.props.classes.tableCell }>{task.assignee}</CustomTableCell>
+            <CustomTableCell>{task.task_name}</CustomTableCell>
+            <CustomTableCell>{task.state}</CustomTableCell>
+          </TableRow>
+          <TaskDetail
+            task={task}
+            open={isSelected}
+            loadTasks={ this.props.loadTasks }
+            handleClose={this.props.handleClose}
             giveMeColorBadge={this.giveMeColorBadge}
             user={this.props.user}
           />

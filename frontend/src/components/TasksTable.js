@@ -150,11 +150,6 @@ class TasksTable extends Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
-  handleChangeState = (taskId, taskState, userId) => () => {
-    this.props.updateTaskState(taskId, taskState, userId);
-    this.props.loadTasks();
-  };
-
   isSelected = id => this.state.selectedRowIds.indexOf(id) !== -1;
 
   getSorting = (order, orderBy) => {
@@ -277,6 +272,7 @@ class TasksTable extends Component {
                         handleChangeState={this.handleChangeState}
                         giveMeColorBadge={this.giveMeColorBadge}
                         user={this.props.user}
+                        loadTasks={ this.props.loadTasks }
                       />
                     </Fragment>
                   );

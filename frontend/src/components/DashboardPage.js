@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getUser } from '../reducers/userReducer'
-import AdminDashboard from './AdminDashboard'
+import { AdminDashboard } from './AdminDashboard'
 import { EmpDashboard } from './EmpDashboard'
 
 class DashboardPage extends Component {

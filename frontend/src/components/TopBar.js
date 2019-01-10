@@ -48,6 +48,7 @@ const styles = theme => ({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
+    width: 'calc(100% - 240px)'
   },
   mainContent: {
     flex: 1,
@@ -115,7 +116,9 @@ class TopBar extends React.Component {
       <main className={classes.content}>
         <div className={classes.toolbar}/>
         <div className={classes.mainContent}>{children}</div>
+        <div style={{ bottom: "0",  height: 50, width: "100%", backgroundColor: "white", position: "fixed", "WebkitMaskImage": "-webkit-gradient(linear, left top, left bottom,  from(rgba(0,0,0,0)),to(rgba(0,0,0,1)))"}}></div>
       </main>
+
 
     </div>);
   }

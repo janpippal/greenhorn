@@ -26,7 +26,9 @@ CONCAT('[',GROUP_CONCAT(DISTINCT JSON_OBJECT('id',th.id,'action',th.action,'by',
 else '[]'
 end as history,
 ua.name as assignee,
-uo.name as owner
+ua.id as assignee_id,
+uo.name as owner,
+ua.id as owner_id
 FROM task t
 left join document_task_rel dtr on dtr.task_id=t.id
 left JOIN document d ON dtr.document_id=d.id
@@ -59,7 +61,9 @@ CONCAT('[',GROUP_CONCAT(DISTINCT JSON_OBJECT('id',th.id,'action',th.action,'by',
 else '[]'
 end as history,
 ua.name as assignee,
-uo.name as owner
+ua.id as assignee_id,
+uo.name as owner,
+ua.id as owner_id
 FROM task t
 left join document_task_rel dtr on dtr.task_id=t.id
 left JOIN document d ON dtr.document_id=d.id
@@ -93,7 +97,9 @@ CONCAT('[',GROUP_CONCAT(DISTINCT JSON_OBJECT('id',th.id,'action',th.action,'by',
 else '[]'
 end as history,
 ua.name as assignee,
-uo.name as owner
+ua.id as assignee_id,
+uo.name as owner,
+ua.id as owner_id
 FROM task t
 left join document_task_rel dtr on dtr.task_id=t.id
 left JOIN document d ON dtr.document_id=d.id

@@ -16,9 +16,9 @@ export const fetchTasks = () => async (dispatch, getState, { api }) => {
     });
 };
 
-export const updateTaskState = (taskId, updatedState, userId) => (dispatch, getState, { api }) => {
+export const updateTaskState = (taskId, updatedState, userId) => async (dispatch, getState, { api }) => {
   let newState = { newState: updatedState, user_id: userId };
-  api
+  await api
     .patch("tasks/" + taskId, newState)
     .then(response => {
       return;

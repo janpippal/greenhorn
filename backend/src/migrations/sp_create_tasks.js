@@ -21,11 +21,11 @@ join task_template tt on tt.id=jptr.template_id
 where jptr.job_position_id=p_job_position_id;
 
 INSERT INTO document_task_rel (task_id,document_id,unique_stamp)
-select t.id,dtr.document_id,null from task t
-join user u on u.id=t.assignee_id
-join job_position_template_rel jptr on jptr.job_position_id=u.jobPosition_id
-join document_template_rel dtr on dtr.template_id=jptr.template_id
-where t.task_template_id=1;
+select t.id,dtr.document_id,null
+from task t
+join job_position_template_rel jptr on jptr.job_position_id=p_job_position_id and t.task_template_id=jptr.template_id
+join document_template_rel dtr on dtr.template_id=t.task_template_id
+where t.task_template_id is not null;
 
 update task set task_template_id=null where 1=1;
 

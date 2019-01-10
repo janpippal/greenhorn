@@ -13,6 +13,7 @@ class AssignmentStep extends React.Component {
 
   render() {
   const { values,handleChange } = this.props;
+  console.log(values)
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -84,6 +85,7 @@ class AssignmentStep extends React.Component {
               checked={ values.assignTasks }
               onChange= { handleChange }
               value="assignTasks"
+              name="assignTasks"
             />
           }
           label="Assign tasks for job position?"

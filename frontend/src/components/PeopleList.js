@@ -28,6 +28,9 @@ const styles = theme => ({
       marginRight: "auto"
     }
   },
+  actionButton: {
+    maxWidth: "33%"
+  },
   cardGrid: {
     padding: `${theme.spacing.unit * 8}px 0`
   },
@@ -85,8 +88,8 @@ class PeopleList extends Component {
                         alignItems="stretch"
                         justify="space-between"
                       >
-                        {user.role === "admin" && (
-                          <Grid item>
+                        {user.role === "admin" && user.department === "HR" && (
+                          <Grid item className={ classes.actionButton }>
                             <Link to={"/people/edit/" + person.id} className="no-underline">
                               <Button size="small" color="primary">
                                 Edit
@@ -94,15 +97,15 @@ class PeopleList extends Component {
                             </Link>
                           </Grid>
                         )}
-                        {user.role === "admin" && (
-                          <Grid item>
+                        {user.role === "admin" && user.department === "HR" && (
+                          <Grid item className={ classes.actionButton }>
                             <DeleteUserDialog
                               deletePerson={this.deletePerson}
                               person={person}
                             />
                           </Grid>
                         )}
-                        <Grid item>
+                        <Grid item className={ classes.actionButton }>
                           <SimpleModal person={person} />
                         </Grid>
                       </Grid>

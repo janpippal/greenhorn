@@ -21,7 +21,7 @@ import Dropzone from "react-dropzone";
 import { fromEvent } from "file-selector";
 import AddIcon from "@material-ui/icons/Add";
 import { connect } from "react-redux";
-import { updateTaskWithFiles } from "../services/tasks";
+import { updateTaskWithFiles, updateTaskState } from "../services/tasks";
 import { uploadFile } from "../services/files";
 
 const styles = theme => ({
@@ -96,9 +96,17 @@ class TaskDetail extends React.Component {
     }
   };
 
+
+  handleChangeState = (taskId, taskState, userId) => {
+    this.props.updateTaskState(taskId, taskState, userId).then(() => {
+      this.props.loadTasks();
+    })
+
+  };
+
   render() {
     const task = this.props.task;
-    const { classes, handleChangeState, user } = this.props;
+    const { classes, user } = this.props;
     const url =
       process.env.REACT_APP_ENVIRONMENT === "local "
         ? "http://localhost:3030"
@@ -270,7 +278,7 @@ class TaskDetail extends React.Component {
             (task.state === "new" || task.state === "returned") && (
               <Fab
                 onClick={() => {
-                  handleChangeState(task.id, "submitted", user.id);
+                  this.handleChangeState(task.id, "submitted", user.id);
                 }}
                 color="primary"
                 variant="extended"
@@ -282,7 +290,7 @@ class TaskDetail extends React.Component {
           {user.role === "admin" && task.state === "submitted" && (
             <Fab
               onClick={() => {
-                handleChangeState(task.id, "returned", user.id);
+                this.handleChangeState(task.id, "returned", user.id);
               }}
               color="primary"
               variant="extended"
@@ -294,7 +302,7 @@ class TaskDetail extends React.Component {
           {user.role === "admin" && task.state === "submitted" && (
             <Fab
               onClick={() => {
-                handleChangeState(task.id, "done", user.id);
+                this.handleChangeState(task.id, "done", user.id);
               }}
               color="primary"
               variant="extended"
@@ -306,7 +314,7 @@ class TaskDetail extends React.Component {
           {user.role === "admin" && task.state !== "cancelled" && (
             <Fab
               onClick={() => {
-                handleChangeState(task.id, "cancelled", user.id);
+                this.handleChangeState(task.id, "cancelled", user.id);
               }}
               color="primary"
               variant="extended"
@@ -323,6 +331,7 @@ class TaskDetail extends React.Component {
 
 const mapDispatchToProps = {
   updateTaskWithFiles,
+  updateTaskState,
   uploadFile
 };
 
